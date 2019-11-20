@@ -44,5 +44,5 @@ cp edge-cases/* testcases/input/
 
 for id in $smalls $randoms $mediums $larges $maxes $edges; do
   cat testcases/input/input${id}.txt | ./validator
-  cat testcases/input/input${id}.txt | ./solution > testcases/output/output${id}.txt
+  cat testcases/input/input${id}.txt | ./solver > testcases/output/output${id}.txt
 done
