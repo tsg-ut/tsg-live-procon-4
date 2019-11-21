@@ -37,19 +37,52 @@ int main(){
     scanf("%s",s[i]);
   }
   
+  // dp[i][j][k] は、 s0[0,i) と s1[0,j) と s2[0,k) についての答え
+  // 番兵を使ってしゅっと書きたかった...
+  
   memset(dp,0,sizeof(dp));
-  reg(i,1,ls[0]){
-    reg(j,1,ls[1]){
-      reg(k,1,ls[2]){
-        int v = min(dp[i][j][k-1],dp[i][j-1][k],dp[i-1][j][k]) + 1;
-        if(s[0][i] == s[1][j] && s[0][i] == s[2][k])v = min(v,dp[i-1][j-1][k-1]);
-        if(s[0][i] == s[1][j])v = min(v,dp[i-1][j-1][k]+1);
-        if(s[0][i] == s[2][k])v = min(v,dp[i-1][j][k-1]+1);
-        if(s[1][j] == s[2][k])v = min(v,dp[i][j-1][k-1]+1);
+  reg(i,0,ls[0]){
+    reg(j,0,ls[1]){
+      reg(k,0,ls[2]){
+      	if(i==0 && j==0 && k==0){
+          dp[i][j][k] = 0;
+          continue;
+        }
+				int v = IINF;
+				if(i > 0)v = min(v,dp[i-1][j][k]+1);
+				if(j > 0)v = min(v,dp[i][j-1][k]+1);
+				if(k > 0)v = min(v,dp[i][j][k-1]+1);
+				if(i > 0 && j > 0 && k > 0){
+				  v = min(v,dp[i-1][j-1][k-1]+2);
+        	if(s[0][i-1] == s[1][j-1] && s[0][i-1] == s[2][k-1])v = min(v,dp[i-1][j-1][k-1]);
+        }
+        if(i > 0 && j > 0){
+        	v = min(v,dp[i-1][j-1][k]+2);
+          if(s[0][i-1] == s[1][j-1]){
+          	v = min(v,dp[i-1][j-1][k]+1);
+            if(k > 0)v = min(v,dp[i-1][j-1][k-1]+1);
+         	}
+        }
+        if(i > 0 && k > 0){
+        	v = min(v,dp[i-1][j][k-1]+2);
+          if(s[0][i-1] == s[2][k-1]){
+            v = min(v,dp[i-1][j][k-1]+1);
+            if(j > 0)v = min(v,dp[i-1][j-1][k-1]+1);
+          }
+        }
+        if(j > 0 && k > 0){
+        	v = min(v,dp[i][j-1][k-1]+2);
+          if(s[1][j-1] == s[2][k-1]){
+            v = min(v,dp[i][j-1][k-1]+1);
+            if(i > 0)v = min(v,dp[i-1][j-1][k-1]+1);
+          }
+        }
+        
+        //printf("%d %d %d : %d\n",i,j,k,v);
         dp[i][j][k] = v;
       }
     }
   }
   
-  printf("%d\n",dp[i][j][k]);
+  printf("%d\n",dp[ls[0]][ls[1]][ls[2]]);
 }

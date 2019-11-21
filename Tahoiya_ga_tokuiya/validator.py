@@ -26,16 +26,7 @@ class Stream:
 	
 	def readEOF(sl):
 		assert len(sl.s) == 0
-
-
-def is_two_beki(n):
-	b = 1
-	while n != b:
-		if b > n:
-			return False
-		b *= 2
-	return True
-
+		
 fns = os.listdir(os.path.join('testcases','input'))
 for fn in fns:
 	s = open(os.path.join('testcases','input',fn),'rb').read()
@@ -44,18 +35,15 @@ for fn in fns:
 	assert proc.stdout == output
 	
 	s = Stream(s)
-	n = s.readInt()
-	assert 1 <= n
-	assert n <= 1024
-	assert is_two_beki(n)
-	
-	s.readLF()
-	qn = 0
-	for _ in range(n):
-		d = s.readStr(n,b'[#.?]*')
-		qn += d.count(b'?')
+	for _ in range(3):
+		n = s.readInt()
+		assert 1 <= n
+		assert n <= 100
+		s.readLF()
+		s.readStr(n,b'[A-Z]*')
 		s.readLF()
 	s.readEOF()
-	assert qn<=10
-	
+
+print('validated %d test cases' % len(fns))
+
 	
