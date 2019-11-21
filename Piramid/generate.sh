@@ -8,7 +8,7 @@ for directory in testcases testcases/input testcases/output; do
 done
 
 # small integer cases
-smalls=$(seq -f '0%g' 0 9)
+smalls=$(seq -f '0%g' 9)
 for id in $smalls; do
   ./generator 0 3.135 100 $id > testcases/input/input${id}.txt
 done
@@ -37,10 +37,9 @@ for id in $maxes; do
   ./generator 3.135 3.135 1000000 $id > testcases/input/input${id}.txt
 done
 
-# edge cases
 # selected by hand
-edges=$(seq 36 40)
-cp edge-cases/* testcases/input/
+edges="00 $(seq 36 40)"
+cp hand-made/* testcases/input/
 
 for id in $smalls $randoms $mediums $larges $maxes $edges; do
   cat testcases/input/input${id}.txt | ./validator
