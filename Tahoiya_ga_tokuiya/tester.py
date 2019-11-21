@@ -1,8 +1,8 @@
 import subprocess
 
-#proc = subprocess.run(["./greedy"],stdout = subprocess.PIPE)
-#anss = proc.stdout
-anss = open('greedy_output.txt','rb').read()
+proc = subprocess.run(["./greedy"],stdout = subprocess.PIPE)
+anss = proc.stdout
+#anss = open('greedy_output.txt','rb').read()
 anss = anss.split(b'head\n')[1:]
 anss = list(map(lambda d: d.split(b'ans\n'),anss))
 

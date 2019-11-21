@@ -57,5 +57,7 @@ for fn in fns:
 		s.readLF()
 	s.readEOF()
 	assert qn<=10
-	
+
+print('validated %d test cases' % len(fns))
+
 	
