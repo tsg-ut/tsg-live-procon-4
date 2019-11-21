@@ -1,4 +1,4 @@
-#include "../testlib/testlib.h"
+#include "testlib/testlib.h"
 #include <iostream>
 #include <cmath>
 #include <utility>

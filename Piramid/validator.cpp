@@ -1,4 +1,4 @@
-#include "../testlib/testlib.h"
+#include "testlib/testlib.h"
 
 constexpr int MaxInteger = 1000000;
 constexpr long long MaxNumerator = 3135, MaxDenominator = 1000;
