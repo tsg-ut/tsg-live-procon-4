@@ -1,4 +1,5 @@
-#include<bits/stdc++.h>
+#include<iostream>
+#include <numeric>
 
 int main(){
     using namespace std;
@@ -6,7 +7,7 @@ int main(){
     unsigned long A, B, X;
     cin >> A >> B >> X;
     
-    unsigned long g{__gcd(A, B)};
+    unsigned long g{gcd(A, B)};
     if(X % g)return 0 & puts("No");
     if(X * g >= A * B)return 0 & puts("Yes");
     for(unsigned long i = 0; i * g <= B && i * A <= X; ++i)if((X - i * A) % B == 0)return 0 & puts("Yes");
