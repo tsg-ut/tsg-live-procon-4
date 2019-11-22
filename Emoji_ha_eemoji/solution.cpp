@@ -111,7 +111,7 @@ int main(){
   }
   
   if(!(hass[0] && hass[1])){
-    puts("0");
+    puts("1");
     return 0;
   }
   data[make_tuple(0,0,0,0)] = 0;

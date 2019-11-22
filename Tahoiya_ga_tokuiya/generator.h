@@ -66,6 +66,27 @@ void gen_test_case(int n,int ls,int tn,vector<testcase*>& cases){
   }
 }
 
+void gen_corner_case(vector<testcase*>& cases){
+	testcase* c;
+	c = new testcase();
+	rep(i,3)c->qs[i] = "ABCDEF";
+	c->ls = 6;
+	c->tn = 6;
+	cases.push_back(c);
+	c = new testcase();
+	c->qs[0] = "AB";
+	c->qs[1] = "CD";
+	c->qs[2] = "EF";
+	c->ls = 2;
+	c->tn = 6;
+	cases.push_back(c);
+	c = new testcase();
+	rep(i,3)c->qs[i] = "AABABAABABAA";
+	c->ls = 12;
+	c->tn = 2;
+	cases.push_back(c);
+}
+
 void puts_test_case(testcase* c){
 	rep(i,3){
 		printf("%lu\n%s\n",c->qs[i].size(),c->qs[i].c_str());

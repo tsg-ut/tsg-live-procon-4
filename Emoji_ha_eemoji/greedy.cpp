@@ -91,6 +91,7 @@ void greedy_solve(testcase* c){
 
 int main(){
   vector<testcase*> cs;
+  gen_corner_case(cs);
   gen_test_case(100,64,8,cs);
   
   rep(i,cs.size()){

@@ -15,6 +15,6 @@ for d in anss:
   pans = proc.stdout
   if ans != pans:
   	print(prob)
-  	print(ans)
+  	print(ans,pans)
   	assert False
 

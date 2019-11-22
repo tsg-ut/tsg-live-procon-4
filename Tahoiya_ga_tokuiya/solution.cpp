@@ -49,34 +49,38 @@ int main(){
           continue;
         }
 				int v = IINF;
-				if(i > 0)v = min(v,dp[i-1][j][k]+1);
-				if(j > 0)v = min(v,dp[i][j-1][k]+1);
+        if(i > 0){
+        	if(j > 0){
+        		if(k > 0){
+        			int cijk = 2;
+        		  if(s[0][i-1] == s[1][j-1] && s[0][i-1] == s[2][k-1])cijk = 0;
+        		  else if(s[0][i-1] == s[1][j-1] || s[0][i-1] == s[2][k-1] || s[1][j-1] == s[2][k-1]){
+        		    cijk = 1;
+        		  }
+        		  v = min(v,dp[i-1][j-1][k-1]+cijk);
+        		}
+        		int cij = 2;
+        		if(s[0][i-1] == s[1][j-1])cij = 1;
+        		v = min(v,dp[i-1][j-1][k]+cij);
+          }
+          if(k > 0){
+          	int cik = 2;
+          	if(s[0][i-1] == s[2][k-1])cik = 1;
+        		v = min(v,dp[i-1][j][k-1]+cik);
+          }
+          v = min(v,dp[i-1][j][k]+1);
+        }
+        
+        if(j > 0){
+        	if(k > 0){
+        		int cjk = 2;
+        		if(s[1][j-1] == s[2][k-1])cjk = 1;
+        		v = min(v,dp[i][j-1][k-1]+cjk);
+        	}
+        	v = min(v,dp[i][j-1][k]+1);
+        }
+        
 				if(k > 0)v = min(v,dp[i][j][k-1]+1);
-				if(i > 0 && j > 0 && k > 0){
-				  v = min(v,dp[i-1][j-1][k-1]+2);
-        	if(s[0][i-1] == s[1][j-1] && s[0][i-1] == s[2][k-1])v = min(v,dp[i-1][j-1][k-1]);
-        }
-        if(i > 0 && j > 0){
-        	v = min(v,dp[i-1][j-1][k]+2);
-          if(s[0][i-1] == s[1][j-1]){
-          	v = min(v,dp[i-1][j-1][k]+1);
-            if(k > 0)v = min(v,dp[i-1][j-1][k-1]+1);
-         	}
-        }
-        if(i > 0 && k > 0){
-        	v = min(v,dp[i-1][j][k-1]+2);
-          if(s[0][i-1] == s[2][k-1]){
-            v = min(v,dp[i-1][j][k-1]+1);
-            if(j > 0)v = min(v,dp[i-1][j-1][k-1]+1);
-          }
-        }
-        if(j > 0 && k > 0){
-        	v = min(v,dp[i][j-1][k-1]+2);
-          if(s[1][j-1] == s[2][k-1]){
-            v = min(v,dp[i][j-1][k-1]+1);
-            if(i > 0)v = min(v,dp[i-1][j-1][k-1]+1);
-          }
-        }
         
         //printf("%d %d %d : %d\n",i,j,k,v);
         dp[i][j][k] = v;

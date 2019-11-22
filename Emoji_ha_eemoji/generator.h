@@ -65,3 +65,23 @@ void gen_test_case(int n,int dn,int k,vector<testcase*>& cases){
     cases.push_back(c);
   }
 }
+
+// いるやつ
+void gen_corner_case(vector<testcase*>& cases){
+	rep(i,2){
+		testcase* c = new testcase();
+		int dn = 32;
+		c->data = vector<vector<char> >(dn,vector<char>(dn));
+		rep(y,dn)rep(x,dn){
+      c->data[y][x] = i ? '#' : '.';
+    }
+    rep(i,10){
+      int y = xorshift() % dn;
+      int x = xorshift() % dn;
+      c->data[y][x] = '?';
+    }
+    
+    cases.push_back(c);
+	}
+}
+

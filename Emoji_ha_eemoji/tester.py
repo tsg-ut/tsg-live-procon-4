@@ -12,4 +12,7 @@ for d in anss:
   proc = subprocess.run(["./solution"],input=prob,stdout = subprocess.PIPE)
   pans = proc.stdout
   #print(ans,pans)
-  assert (ans==pans)
+  if ans!=pans:
+  	print(prob)
+  	print(ans,pans)
+  	assert False

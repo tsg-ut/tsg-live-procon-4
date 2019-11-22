@@ -33,81 +33,70 @@ int hash[13][1030][1030];
 typedef tuple<int,int,int,int> key;
 map<key,int> data;
 
-int init(int u,int d,int l,int r,int a,bool& ok){
-  key k;
+
+typedef struct node_{
+  struct node_* cs[4];
+  struct node_* pa;
   int ha;
-  if(u+1 == d && l+1 == r){
-    char c = s[u][l];
-    if(c == '.')ha = 0;
-    else if(c == '#')ha = 1;
+} node;
+
+key key_of_node(node* no){
+  return make_tuple(
+    no->cs[0]->ha,
+    no->cs[1]->ha,
+    no->cs[2]->ha,
+    no->cs[3]->ha
+  );
+}
+
+bool update_node(node* no){
+  bool ok = true;
+  rep(i,4){
+    if(no->cs[i]->ha < 0)ok = false;
+  }
+  if(!ok){
+    no->ha = -1;
+    return false;
+  }
+  key k = key_of_node(no);
+  
+  bool res = false;
+  if(data.find(k) == data.end()){
+    int s = data.size();
+    data[k] = s;
+    res = true;
+  }
+  no->ha = data[k];
+  return res;
+}
+
+node* init(int y,int x,int b,vector<node*>& qs){
+  node* res;
+  if(b == 0){
+    res = new node();
+    char c = s[y][x];
+    if(c == '.')res->ha = 0;
+    else if(c == '#')res->ha = 1;
     else{
-      ok = false;
-      return -1;
+      res->ha = -1;
+      qs.push_back(res);
     }
   }
   else{
-    int my = (u+d)/2;
-    int mx = (l+r)/2;
-    int hs[4];
-    rep(i,2)rep(j,2){
-      int tu=u,td=my,tl=l,tr=mx;
-      if(i%2){
-        tu = my; td = d;
-      }
-      if(j%2){
-        tl = mx; tr = r;
-      }
-      hs[i*2+j] = init(tu,td,tl,tr,a+1,ok);
+    res = new node();
+    rep(dy,2)rep(dx,2){
+      res->cs[dy*2+dx] = init(y+b*dy, x+b*dx, b/2, qs);
     }
-    key k = make_tuple(hs[0],hs[1],hs[2],hs[3]);
-    if(!ok)return -1;
-    
-    if(data.find(k) == data.end()){
-      int s = data.size();
-      data[k] = s;
-    }    
-    ha = data[k];
-  }
-  hash[a][u][d] = ha;
-  return ha;
-}
-
-vector<mp> ps;
-
-
-
-
-int calc(){
-  vector<key> aks;
-  rep(i,ps.size()){
-    int u,d,l,r;
-    u = ps[i].fst; d=u+1;
-    l = ps[i].snd; r=l+1;
-    int b = 1;
-    while((r-l) <= n){
-      int tu = u ^ (b & u);
-      int td = tu + b;
-      int tl = l ^ (b & l);
-      int tr = tl + b;
-      b *= 2;
-      
+    rep(i,4){
+      res->cs[i]->pa = res;
     }
+    update_node(res);
   }
-  
-  
-  rep(i,ps.size()){
-    int y = ps[
-    hash[dn][
-  }
-  rep(i,aks.size()){
-    key k = aks[i];
-    if(data.find(k) != data.end()){
-      data.erase(k);
-    }
-  }
+  return res;
 }
 
 int main(){
+  int n;
   scanf("%d",&n);
   rep(i,n){
     scanf("%s",s[i]);
@@ -115,9 +104,7 @@ int main(){
   
   bool hass[2] = {false,false};
   rep(y,n)rep(x,n){
-    if(s[y][x] == '?'){
-      ps.push_back(mp(y,x));
-    }
+    if(s[y][x] == '?')continue;
     else{
       hass[s[y][x] == '#' ? 1 : 0] = true;
     }
@@ -130,17 +117,42 @@ int main(){
   data[make_tuple(0,0,0,0)] = 0;
   data[make_tuple(1,1,1,1)] = 1;
   
-  memset(hash,-1,sizeof(hash));
-  bool ok = true;
-  init(0,n,0,n,0,ok);
+  
+  vector<node*> qs;
+  node* tree = init(0,0,n/2,qs);
+  tree->pa = NULL;
   
   int ans = 1 << 30;
-  rep(i,1 << ps.size()){
-    rep(j,ps.size()){
-      char c = ((1 << j) & i) ? '#' : '.';
-      s[ps[j].fst][ps[j].snd] = c;
+  rep(i,1 << qs.size()){
+    vector<key> rems;
+    
+    rep(j,qs.size()){
+      int c = ((1 << j) & i) ? 1 : 0;
+      qs[j]->ha = c;
+      
+      node* no = qs[j]->pa;
+      while(no != NULL){
+        bool isnew = update_node(no);
+        if(no->ha < 0)break;
+        if(isnew){
+          rems.push_back(key_of_node(no));
+        }
+        no = no->pa;
+      }
     }
-    ans = min(ans,calc());
+    ans = min(ans,((int)data.size()));
+    
+    rep(j,rems.size()){
+      data.erase(rems[j]);
+    }
+    
+    rep(j,qs.size()){
+      node* no = qs[j];
+      while(no != NULL){
+        no->ha = -1;
+        no = no->pa;
+      }
+    }
   }
   printf("%d\n",ans);
 }

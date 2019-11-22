@@ -82,7 +82,8 @@ int greedy_solve(testcase* c){
     if(d==0){
       int res = 0;
       rep(i,3)res += calc_dist(s,nlen,c->qs[i].c_str(),c->qs[i].size());
-      //if(c->qs[0] == "dbbaca" && res < 8)printf("%d %s\n",res,s);
+      //if(c->qs[0] == "dbbaca" && res < 8)
+      //printf("%d %s\n",res,s);
       return res;
     }
     else{
@@ -107,10 +108,11 @@ int main(){
   */
   seeding(314159);
   vector<testcase*> cs;
+  gen_corner_case(cs);
   gen_test_case(40,4,26,cs);
   gen_test_case(30,6,6,cs);
   gen_test_case(30,11,2,cs);
-
+	
   rep(i,cs.size()){
   	int ans = greedy_solve(cs[i]);
     puts("head");
