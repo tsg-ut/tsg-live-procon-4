@@ -1,4 +1,4 @@
-# Constructable
+# LCM Interval
 
 ## 問題文
 ナンくんは長さ$N$の自然数列$(A_i)$を持っています。
