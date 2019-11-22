@@ -9,7 +9,7 @@ TSG部員が$M$人いるとき、TSGにTSG LIVE! 4を開催できるだけの部
 
 ## 制約
 $0 \le N \le 1000$
-$1 \le N, M, K \le 1000$
+$1 \le M, K \le 1000$
 
 ## 入力
 $N M K$
